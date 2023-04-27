@@ -6,7 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./compartilhamento/navbar/navbar.module').then(m => m.NavbarModule)
+    loadChildren: () => import('./Layout/navbar/navbar.module').then(m => m.NavbarModule)
   }
 ];
 @NgModule({

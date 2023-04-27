@@ -4,11 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './compartilhamento/navbar/navbar.component';
+import { NavbarComponent } from './Layout/navbar/navbar.component';
 import { CriarComponent } from './paginas/criar/criar.component';
 import { EditarComponent } from './paginas/editar/editar.component';
 import { ExcluirComponent } from './paginas/excluir/excluir.component';
-import { NavbarModule } from './compartilhamento/navbar/navbar.module';
+import { NavbarModule } from './Layout/navbar/navbar.module';
 
 @NgModule({
   declarations: [
