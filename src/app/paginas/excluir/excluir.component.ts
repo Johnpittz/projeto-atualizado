@@ -18,7 +18,7 @@ export class ExcluirComponent implements OnInit {
       this.atividades = JSON.parse(tarefas)
     }
   }
-  excluir(id: number) {
+  excluir(id: number) : void {
     this.atividades = this.atividades.filter(item => (item.id != id))
     this.salvarLista()
   }

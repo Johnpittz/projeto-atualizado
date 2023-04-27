@@ -36,10 +36,10 @@ export class CriarComponent implements OnInit {
   }
   
 
-  private salvarLista(){
+  private salvarLista():void{
     localStorage.setItem(this.TAREFA_KEY, JSON.stringify(this.atividades))
   }
-  concluir(id: number) {
+  concluir(id: number): void {
     const tarefaEncontrada = this.atividades.find( item => item.id == id)
 
     if (tarefaEncontrada){

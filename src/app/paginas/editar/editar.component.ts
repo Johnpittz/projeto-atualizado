@@ -25,7 +25,7 @@ export class EditarComponent implements OnInit {
     localStorage.setItem(this.TAREFA_KEY, JSON.stringify(this.atividades))
   }
 
-    editarTarefa(tarefa: ITarefaEnum) {
+    editarTarefa(tarefa: ITarefaEnum): void {
       this.atividades.forEach(item => {
         if (item.id == tarefa.id) {
           item.editando = true;
