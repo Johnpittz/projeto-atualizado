@@ -1,5 +1,6 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ITarefaEnum } from 'src/app/shared/models/ITarefa';
+import { TarefaService } from 'src/app/shared/service/tarefa.service';
 
 @Component({
   selector: 'app-excluir',
@@ -8,22 +9,20 @@ import { ITarefaEnum } from 'src/app/shared/models/ITarefa';
 })
 export class ExcluirComponent implements OnInit {
 
-  TAREFA_KEY = 'tarefa_key'
-  atividades : ITarefaEnum[] = []
-  constructor() { }
+  public atividades: ITarefaEnum[] = [];
+
+  constructor(private tarefaService: TarefaService) { };
 
   ngOnInit(): void {
-     const tarefas = localStorage.getItem(this.TAREFA_KEY)
-    if (tarefas){
-      this.atividades = JSON.parse(tarefas)
-    }
-  }
-  excluir(id: number) : void {
-    this.atividades = this.atividades.filter(item => (item.id != id))
-    this.salvarLista()
-  }
-  private salvarLista(): void {
-    localStorage.setItem(this.TAREFA_KEY, JSON.stringify(this.atividades))
+    this.tarefaService.getAtividades().subscribe(atividades => this.atividades = atividades);
   }
 
+  public excluir(id: number): void {
+    const tarefaEncontrada = this.atividades.find(item => item.id === id);
+
+    if (tarefaEncontrada) {
+      this.tarefaService.excluirTarefa(tarefaEncontrada);
+      this.atividades = this.atividades.filter(item => item.id !== id);
+    };
+  }
 }

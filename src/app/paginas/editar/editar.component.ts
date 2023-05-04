@@ -1,8 +1,6 @@
-import { ITarefaEnum } from './../../shared/models/ITarefa';
-import { Component, OnInit, NgModule } from '@angular/core';
-
-
-
+import { Component, OnInit } from '@angular/core';
+import { ITarefaEnum } from 'src/app/shared/models/ITarefa';
+import { TarefaService } from 'src/app/shared/service/tarefa.service';
 
 @Component({
   selector: 'app-editar',
@@ -11,41 +9,30 @@ import { Component, OnInit, NgModule } from '@angular/core';
 })
 export class EditarComponent implements OnInit {
   
-  TAREFA_KEY = 'tarefa_key'
-  atividades : ITarefaEnum[] = []
-  constructor() { }
+  public atividades: ITarefaEnum[] = [];
+
+  constructor(private tarefaService: TarefaService) { };
 
   ngOnInit(): void {
-     const tarefas = localStorage.getItem(this.TAREFA_KEY)
-    if (tarefas){
-      this.atividades = JSON.parse(tarefas)
-    }
-  }
-  private salvarLista(): void {
-    localStorage.setItem(this.TAREFA_KEY, JSON.stringify(this.atividades))
+    this.tarefaService.getAtividades().subscribe(atividades => this.atividades = atividades);
   }
 
-    editarTarefa(tarefa: ITarefaEnum): void {
-      this.atividades.forEach(item => {
-        if (item.id == tarefa.id) {
-          item.editando = true;
-        } else {
-          item.editando = false;
-        }
-      });
-    }
-    
-    salvarTarefa(): void {
-      this.atividades.forEach(item => {
-        if (item.editando) {
-          item.editando = false;
-        }
-      });
-      this.salvarLista();
-    }
-    
+  public editarTarefa(tarefa: ITarefaEnum): void {
+    this.atividades.forEach(item => {
+      if (item.id === tarefa.id) {
+        item.editando = true;
+      } else {
+        item.editando = false;
+      }
+    });
   }
-
-
-
-
+  
+  public salvarTarefa(): void {
+    this.atividades.forEach(item => {
+      if (item.editando) {
+        item.editando = false;
+        this.tarefaService.atualizarAtividade(item);
+      }
+    });
+  }
+}

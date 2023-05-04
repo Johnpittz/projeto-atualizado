@@ -1,6 +1,6 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ITarefaEnum } from 'src/app/shared/models/ITarefa';
-
+import { TarefaService } from 'src/app/shared/service/tarefa.service';
 
 @Component({
   selector: 'app-criar',
@@ -9,44 +9,34 @@ import { ITarefaEnum } from 'src/app/shared/models/ITarefa';
 })
 export class CriarComponent implements OnInit {
 
-  TAREFA_KEY = 'tarefa_key'
-  atividades : ITarefaEnum[] = []
-  constructor() { }
+  public atividades: ITarefaEnum[] = [];
+
+  constructor(private tarefaService: TarefaService) { }
 
   ngOnInit(): void {
-     const tarefas = localStorage.getItem(this.TAREFA_KEY)
-    if (tarefas){
-      this.atividades = JSON.parse(tarefas)
-    }
+    this.tarefaService.getAtividades().subscribe(atividades => this.atividades = atividades);
   }
 
-  adicionar(nomeTarefa: string) {
-    if (nomeTarefa.trim().length == 0){
+  public adicionar(nomeTarefa: string) {
+    if (nomeTarefa.trim().length === 0){
       return;
     }
-    const tarefaEncontrada = this.atividades.find(item => item.nome.toLowerCase() == nomeTarefa.toLowerCase())
+    const tarefaEncontrada = this.atividades.find(item => item.nome.toLowerCase() == nomeTarefa.toLowerCase());
 
     if (!tarefaEncontrada){
-      this.atividades.push({
+      this.tarefaService.adicionarAtividade({
         id: this.atividades.length, nome: nomeTarefa, concluida: false,
         editando: false
-      })
-      this.salvarLista()
+      });
     }
   }
   
-
-  private salvarLista():void{
-    localStorage.setItem(this.TAREFA_KEY, JSON.stringify(this.atividades))
-  }
-  concluir(id: number): void {
-    const tarefaEncontrada = this.atividades.find( item => item.id == id)
+  public concluir(id: number): void {
+    const tarefaEncontrada = this.atividades.find(item => item.id == id);
 
     if (tarefaEncontrada){
-      tarefaEncontrada.concluida = !tarefaEncontrada.concluida
-      this.salvarLista()
+      tarefaEncontrada.concluida = !tarefaEncontrada.concluida;
+      this.tarefaService.atualizarAtividade(tarefaEncontrada);
     }
+  }
 }
-}
-
-
